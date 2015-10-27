@@ -24,14 +24,13 @@ PORTB.1 - down
 PORTB.2 - Led
 PORTB.3  - Motor pot    ADC2
 PORTB.4  - Reguljstor   pot   ADC3
-
 *****************************************************/
 
 #include <tiny13.h>
 
 #include <delay.h>
 
-#define ADC_VREF_TYPE 0x40
+#define ADC_VREF_TYPE 0x00
 
 #define min 20
 #define max 1000
@@ -69,9 +68,6 @@ void Stop()
   
 }
 
-
-
-
 // Read the AD conversion result
 unsigned int read_adc(unsigned char adc_input)
 {
@@ -103,8 +99,8 @@ CLKPR=0x00;
 // Input/Output Ports initialization
 // Port B initialization
 // Func5=In Func4=In Func3=In Func2=Out Func1=Out Func0=Out 
-// State5=T State4=T State3=T State2=1 State1=0 State0=0 
-PORTB=0x04;
+// State5=P State4=P State3=P State2=0 State1=0 State0=0 
+PORTB=0x38;
 DDRB=0x07;
 
 // Timer/Counter 0 initialization
@@ -138,22 +134,42 @@ DIDR0=0x00;
 // ADC Clock frequency: 1000,000 kHz
 // ADC Bandgap Voltage Reference: Off
 // ADC Auto Trigger Source: ADC Stopped
-// Digital input buffers on ADC0: On, ADC1: On, ADC2: On, ADC3: On
+// Digital input buffers on ADC0: Off, ADC1: Off, ADC2: On, ADC3: On
 DIDR0&=0x03;
-DIDR0|=0x00;
+DIDR0|=0x24;
 ADMUX=ADC_VREF_TYPE & 0xff;
 ADCSRA=0x83;
 
-  
-while (1)
-      {
-              
-           if (read_adc(motor)<500 )
-              {
-               led=0;
-              }        
-            else 
-             led=1;  
+ led=0;
+delay_ms(1000);
+  led=1;
 
+while (1)
+      {        
+      
+        if (read_adc(motor)<=read_adc(reguljator)+10 &&    read_adc(motor)>=read_adc(reguljator)-10   )
+        
+             {
+         Stop();
+        } 
+         else
+                {
+      
+     while(read_adc(reguljator)<read_adc(motor) && read_adc(motor)>min )
+      {
+     GoDown();
+      }          
+           
+       while(read_adc(reguljator)>read_adc(motor) && read_adc(motor)<max)
+      {
+     GoUp();
+      } 
+       if  (read_adc(reguljator)==read_adc(motor))
+      {
+    Stop();
+      } ;
+        
       }
+      
+      }    
 }

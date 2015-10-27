@@ -69,6 +69,9 @@ void Stop()
   
 }
 
+unsigned int mot_poz ;
+unsigned int reg_poz ;
+
 
 
 
@@ -147,8 +150,11 @@ ADCSRA=0x83;
   
 while (1)
       {
-              
-           if (read_adc(motor)<500 )
+            mot_poz=read_adc(motor);   
+                       
+            reg_poz=read_adc(reguljator); 
+      
+           if (mot_poz== reg_poz)
               {
                led=0;
               }        
