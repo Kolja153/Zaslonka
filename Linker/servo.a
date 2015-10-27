@@ -261,68 +261,29 @@
 ;PCODE: $00000065 VOL: 0
 ; 0000 0095       {
 ; 0000 0096 
-; 0000 0097            if (read_adc(motor)<read_adc(reguljator) )
+; 0000 0097            if (read_adc(motor)<500 )
 ;PCODE: $00000066 VOL: 0
 ;PCODE: $00000067 VOL: 0
 ;PCODE: $00000068 VOL: 0
 ;PCODE: $00000069 VOL: 0
 ;PCODE: $0000006A VOL: 0
+; 0000 0098               {
+; 0000 0099                led=0;
 ;PCODE: $0000006B VOL: 0
 ;PCODE: $0000006C VOL: 0
+; 0000 009A               }
+; 0000 009B             else
 ;PCODE: $0000006D VOL: 0
 ;PCODE: $0000006E VOL: 0
+; 0000 009C              led=1;
 ;PCODE: $0000006F VOL: 0
-; 0000 0098                 {
-; 0000 0099                     GoUp();
 ;PCODE: $00000070 VOL: 0
-; 0000 009A 
-; 0000 009B                 }
-; 0000 009C 
 ; 0000 009D 
-; 0000 009E               if (read_adc(motor)>read_adc(reguljator) )
+; 0000 009E       }
 ;PCODE: $00000071 VOL: 0
 ;PCODE: $00000072 VOL: 0
 ;PCODE: $00000073 VOL: 0
+; 0000 009F }
 ;PCODE: $00000074 VOL: 0
 ;PCODE: $00000075 VOL: 0
 ;PCODE: $00000076 VOL: 0
-;PCODE: $00000077 VOL: 0
-;PCODE: $00000078 VOL: 0
-;PCODE: $00000079 VOL: 0
-;PCODE: $0000007A VOL: 0
-;PCODE: $0000007B VOL: 0
-; 0000 009F                 {
-; 0000 00A0                     GoDown();
-;PCODE: $0000007C VOL: 0
-; 0000 00A1 
-; 0000 00A2                 }
-; 0000 00A3 
-; 0000 00A4 
-; 0000 00A5 
-; 0000 00A6               if (read_adc(motor)==read_adc(reguljator) )
-;PCODE: $0000007D VOL: 0
-;PCODE: $0000007E VOL: 0
-;PCODE: $0000007F VOL: 0
-;PCODE: $00000080 VOL: 0
-;PCODE: $00000081 VOL: 0
-;PCODE: $00000082 VOL: 0
-;PCODE: $00000083 VOL: 0
-;PCODE: $00000084 VOL: 0
-;PCODE: $00000085 VOL: 0
-;PCODE: $00000086 VOL: 0
-;PCODE: $00000087 VOL: 0
-; 0000 00A7                 {
-; 0000 00A8                      Stop();
-;PCODE: $00000088 VOL: 0
-; 0000 00A9 
-; 0000 00AA                 }
-; 0000 00AB 
-; 0000 00AC 
-; 0000 00AD       }
-;PCODE: $00000089 VOL: 0
-;PCODE: $0000008A VOL: 0
-;PCODE: $0000008B VOL: 0
-; 0000 00AE }
-;PCODE: $0000008C VOL: 0
-;PCODE: $0000008D VOL: 0
-;PCODE: $0000008E VOL: 0

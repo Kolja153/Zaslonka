@@ -1100,42 +1100,27 @@ __CLEAR_SRAM:
 ; 0000 0031 {
 
 	.CSEG
-_GoUp:
 ; 0000 0032     up=1;
-	SBI  0x18,0
 ; 0000 0033     down=0;
-	CBI  0x18,1
 ; 0000 0034     led=0;
-	RJMP _0x2000001
 ; 0000 0035 
 ; 0000 0036 }
 ;
 ;void GoDown()
 ; 0000 0039 {
-_GoDown:
 ; 0000 003A     up=0;
-	CBI  0x18,0
 ; 0000 003B     down=1;
-	SBI  0x18,1
 ; 0000 003C      led=0;
-_0x2000001:
-	CBI  0x18,2
 ; 0000 003D 
 ; 0000 003E }
-	RET
 ;
 ;void Stop()
 ; 0000 0041 {
-_Stop:
 ; 0000 0042     up=0;
-	CBI  0x18,0
 ; 0000 0043     down=0;
-	CBI  0x18,1
 ; 0000 0044     led=1;
-	SBI  0x18,2
 ; 0000 0045 
 ; 0000 0046 }
-	RET
 ;
 ;
 ;
@@ -1264,80 +1249,32 @@ _main:
 _0x18:
 ; 0000 0095       {
 ; 0000 0096 
-; 0000 0097            if (read_adc(motor)<read_adc(reguljator) )
-	RCALL SUBOPT_0x0
-	PUSH R31
-	PUSH R30
-	RCALL SUBOPT_0x1
-	POP  R26
-	POP  R27
-	CP   R26,R30
-	CPC  R27,R31
-	BRSH _0x1B
-; 0000 0098                 {
-; 0000 0099                     GoUp();
-	RCALL _GoUp
-; 0000 009A 
-; 0000 009B                 }
-; 0000 009C 
-; 0000 009D 
-; 0000 009E               if (read_adc(motor)>read_adc(reguljator) )
-_0x1B:
-	RCALL SUBOPT_0x0
-	PUSH R31
-	PUSH R30
-	RCALL SUBOPT_0x1
-	POP  R26
-	POP  R27
-	CP   R30,R26
-	CPC  R31,R27
-	BRSH _0x1C
-; 0000 009F                 {
-; 0000 00A0                     GoDown();
-	RCALL _GoDown
-; 0000 00A1 
-; 0000 00A2                 }
-; 0000 00A3 
-; 0000 00A4 
-; 0000 00A5 
-; 0000 00A6               if (read_adc(motor)==read_adc(reguljator) )
-_0x1C:
-	RCALL SUBOPT_0x0
-	PUSH R31
-	PUSH R30
-	RCALL SUBOPT_0x1
-	POP  R26
-	POP  R27
-	CP   R30,R26
-	CPC  R31,R27
-	BRNE _0x1D
-; 0000 00A7                 {
-; 0000 00A8                      Stop();
-	RCALL _Stop
-; 0000 00A9 
-; 0000 00AA                 }
-; 0000 00AB 
-; 0000 00AC 
-; 0000 00AD       }
-_0x1D:
-	RJMP _0x18
-; 0000 00AE }
-_0x1E:
-	RJMP _0x1E
-
-	.CSEG
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:2 WORDS
-SUBOPT_0x0:
+; 0000 0097            if (read_adc(motor)<500 )
 	LDI  R30,LOW(2)
 	ST   -Y,R30
-	RJMP _read_adc
+	RCALL _read_adc
+	CPI  R30,LOW(0x1F4)
+	LDI  R26,HIGH(0x1F4)
+	CPC  R31,R26
+	BRSH _0x1B
+; 0000 0098               {
+; 0000 0099                led=0;
+	CBI  0x18,2
+; 0000 009A               }
+; 0000 009B             else
+	RJMP _0x1E
+_0x1B:
+; 0000 009C              led=1;
+	SBI  0x18,2
+; 0000 009D 
+; 0000 009E       }
+_0x1E:
+	RJMP _0x18
+; 0000 009F }
+_0x21:
+	RJMP _0x21
 
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:2 WORDS
-SUBOPT_0x1:
-	LDI  R30,LOW(3)
-	ST   -Y,R30
-	RJMP _read_adc
-
+	.CSEG
 
 	.CSEG
 ;END OF CODE MARKER

@@ -148,27 +148,12 @@ ADCSRA=0x83;
 while (1)
       {
               
-           if (read_adc(motor)<read_adc(reguljator) )
-                {
-                    GoUp();
-                    
-                }  
-       
-                
-              if (read_adc(motor)>read_adc(reguljator) )
-                {
-                    GoDown();
-                    
-                }  
-         
-                
-                
-              if (read_adc(motor)==read_adc(reguljator) )
-                {
-                     Stop();
-                    
-                }  
-                                                
+           if (read_adc(motor)<500 )
+              {
+               led=0;
+              }        
+            else 
+             led=1;  
 
       }
 }
