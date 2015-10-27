@@ -148,14 +148,14 @@ ADCSRA=0x83;
 while (1)
       {
               
-           if (read_adc(motor)<read_adc(reguljator) &&   read_adc(motor)<max)
+           if (read_adc(motor)<read_adc(reguljator) )
                 {
                     GoUp();
                     
                 }  
        
                 
-              if (read_adc(motor)>read_adc(reguljator) &&   read_adc(motor)>min)
+              if (read_adc(motor)>read_adc(reguljator) )
                 {
                     GoDown();
                     

@@ -1082,7 +1082,7 @@ __CLEAR_SRAM:
 ;
 ;#include <delay.h>
 ;
-;#define ADC_VREF_TYPE 0x00
+;#define ADC_VREF_TYPE 0x40
 ;
 ;#define min 20
 ;#define max 1000
@@ -1147,6 +1147,7 @@ _read_adc:
 ; 0000 004E ADMUX=adc_input | (ADC_VREF_TYPE & 0xff);
 ;	adc_input -> Y+0
 	LD   R30,Y
+	ORI  R30,0x40
 	OUT  0x7,R30
 ; 0000 004F // Delay needed for the stabilization of the ADC input voltage
 ; 0000 0050 delay_us(10);
@@ -1252,7 +1253,7 @@ _main:
 	IN   R30,0x14
 	OUT  0x14,R30
 ; 0000 0090 ADMUX=ADC_VREF_TYPE & 0xff;
-	LDI  R30,LOW(0)
+	LDI  R30,LOW(64)
 	OUT  0x7,R30
 ; 0000 0091 ADCSRA=0x83;
 	LDI  R30,LOW(131)

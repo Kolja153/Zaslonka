@@ -31,7 +31,7 @@ PORTB.4  - Reguljstor   pot   ADC3
 
 #include <delay.h>
 
-#define ADC_VREF_TYPE 0x00
+#define ADC_VREF_TYPE 0x40
 
 #define min 20
 #define max 1000

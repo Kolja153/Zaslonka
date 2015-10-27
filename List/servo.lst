@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oct 27 14:41:53 2015
+AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oct 27 14:52:30 2015
 
                  
                  
@@ -1036,7 +1036,7 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ;DATA STACK POINTER INITIALIZATION
 000020 e7c0      	LDI  R28,LOW(__SRAM_START+__DSTACK_SIZE)
                  
-000021 c018      	RJMP _main
+000021 c019      	RJMP _main
                  
                  	.ESEG
                  	.ORG 0
@@ -1086,7 +1086,7 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ;
                  ;#include <delay.h>
                  ;
-                 ;#define ADC_VREF_TYPE 0x00
+                 ;#define ADC_VREF_TYPE 0x40
                  ;
                  ;#define min 20
                  ;#define max 1000
@@ -1151,30 +1151,31 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 004E ADMUX=adc_input | (ADC_VREF_TYPE & 0xff);
                  ;	adc_input -> Y+0
 00002d 81e8      	LD   R30,Y
-00002e b9e7      	OUT  0x7,R30
+00002e 64e0      	ORI  R30,0x40
+00002f b9e7      	OUT  0x7,R30
                  ; 0000 004F // Delay needed for the stabilization of the ADC input voltage
                  ; 0000 0050 delay_us(10);
                 +
-00002f e18b     +LDI R24 , LOW ( 27 )
+000030 e18b     +LDI R24 , LOW ( 27 )
                 +__DELAY_USB_LOOP :
-000030 958a     +DEC R24
-000031 f7f1     +BRNE __DELAY_USB_LOOP
+000031 958a     +DEC R24
+000032 f7f1     +BRNE __DELAY_USB_LOOP
                  	__DELAY_USB 27
                  ; 0000 0051 // Start the AD conversion
                  ; 0000 0052 ADCSRA|=0x40;
-000032 9a36      	SBI  0x6,6
+000033 9a36      	SBI  0x6,6
                  ; 0000 0053 // Wait for the AD conversion to complete
                  ; 0000 0054 while ((ADCSRA & 0x10)==0);
                  _0x15:
-000033 9b34      	SBIS 0x6,4
-000034 cffe      	RJMP _0x15
+000034 9b34      	SBIS 0x6,4
+000035 cffe      	RJMP _0x15
                  ; 0000 0055 ADCSRA|=0x10;
-000035 9a34      	SBI  0x6,4
+000036 9a34      	SBI  0x6,4
                  ; 0000 0056 return ADCW;
-000036 b1e4      	IN   R30,0x4
-000037 b1f5      	IN   R31,0x4+1
-000038 9621      	ADIW R28,1
-000039 9508      	RET
+000037 b1e4      	IN   R30,0x4
+000038 b1f5      	IN   R31,0x4+1
+000039 9621      	ADIW R28,1
+00003a 9508      	RET
                  ; 0000 0057 }
                  ;
                  ;// Declare your global variables here
@@ -1187,11 +1188,11 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 005F // Crystal Oscillator division factor: 1
                  ; 0000 0060 #pragma optsize-
                  ; 0000 0061 CLKPR=0x80;
-00003a e8e0      	LDI  R30,LOW(128)
-00003b bde6      	OUT  0x26,R30
+00003b e8e0      	LDI  R30,LOW(128)
+00003c bde6      	OUT  0x26,R30
                  ; 0000 0062 CLKPR=0x00;
-00003c e0e0      	LDI  R30,LOW(0)
-00003d bde6      	OUT  0x26,R30
+00003d e0e0      	LDI  R30,LOW(0)
+00003e bde6      	OUT  0x26,R30
                  ; 0000 0063 #ifdef _OPTIMIZE_SIZE_
                  ; 0000 0064 #pragma optsize+
                  ; 0000 0065 #endif
@@ -1201,11 +1202,11 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 0069 // Func5=In Func4=In Func3=In Func2=Out Func1=Out Func0=Out
                  ; 0000 006A // State5=T State4=T State3=T State2=1 State1=0 State0=0
                  ; 0000 006B PORTB=0x04;
-00003e e0e4      	LDI  R30,LOW(4)
-00003f bbe8      	OUT  0x18,R30
+00003f e0e4      	LDI  R30,LOW(4)
+000040 bbe8      	OUT  0x18,R30
                  ; 0000 006C DDRB=0x07;
-000040 e0e7      	LDI  R30,LOW(7)
-000041 bbe7      	OUT  0x17,R30
+000041 e0e7      	LDI  R30,LOW(7)
+000042 bbe7      	OUT  0x17,R30
                  ; 0000 006D 
                  ; 0000 006E // Timer/Counter 0 initialization
                  ; 0000 006F // Clock source: System Clock
@@ -1214,39 +1215,39 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 0072 // OC0A output: Disconnected
                  ; 0000 0073 // OC0B output: Disconnected
                  ; 0000 0074 TCCR0A=0x00;
-000042 e0e0      	LDI  R30,LOW(0)
-000043 bdef      	OUT  0x2F,R30
+000043 e0e0      	LDI  R30,LOW(0)
+000044 bdef      	OUT  0x2F,R30
                  ; 0000 0075 TCCR0B=0x00;
-000044 bfe3      	OUT  0x33,R30
+000045 bfe3      	OUT  0x33,R30
                  ; 0000 0076 TCNT0=0x00;
-000045 bfe2      	OUT  0x32,R30
+000046 bfe2      	OUT  0x32,R30
                  ; 0000 0077 OCR0A=0x00;
-000046 bfe6      	OUT  0x36,R30
+000047 bfe6      	OUT  0x36,R30
                  ; 0000 0078 OCR0B=0x00;
-000047 bde9      	OUT  0x29,R30
+000048 bde9      	OUT  0x29,R30
                  ; 0000 0079 
                  ; 0000 007A // External Interrupt(s) initialization
                  ; 0000 007B // INT0: Off
                  ; 0000 007C // Interrupt on any change on pins PCINT0-5: Off
                  ; 0000 007D GIMSK=0x00;
-000048 bfeb      	OUT  0x3B,R30
+000049 bfeb      	OUT  0x3B,R30
                  ; 0000 007E MCUCR=0x00;
-000049 bfe5      	OUT  0x35,R30
+00004a bfe5      	OUT  0x35,R30
                  ; 0000 007F 
                  ; 0000 0080 // Timer/Counter 0 Interrupt(s) initialization
                  ; 0000 0081 TIMSK0=0x00;
-00004a bfe9      	OUT  0x39,R30
+00004b bfe9      	OUT  0x39,R30
                  ; 0000 0082 
                  ; 0000 0083 // Analog Comparator initialization
                  ; 0000 0084 // Analog Comparator: Off
                  ; 0000 0085 ACSR=0x80;
-00004b e8e0      	LDI  R30,LOW(128)
-00004c b9e8      	OUT  0x8,R30
+00004c e8e0      	LDI  R30,LOW(128)
+00004d b9e8      	OUT  0x8,R30
                  ; 0000 0086 ADCSRB=0x00;
-00004d e0e0      	LDI  R30,LOW(0)
-00004e b9e3      	OUT  0x3,R30
+00004e e0e0      	LDI  R30,LOW(0)
+00004f b9e3      	OUT  0x3,R30
                  ; 0000 0087 DIDR0=0x00;
-00004f bbe4      	OUT  0x14,R30
+000050 bbe4      	OUT  0x14,R30
                  ; 0000 0088 
                  ; 0000 0089 // ADC initialization
                  ; 0000 008A // ADC Clock frequency: 1000,000 kHz
@@ -1254,18 +1255,18 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 008C // ADC Auto Trigger Source: ADC Stopped
                  ; 0000 008D // Digital input buffers on ADC0: On, ADC1: On, ADC2: On, ADC3: On
                  ; 0000 008E DIDR0&=0x03;
-000050 b3e4      	IN   R30,0x14
-000051 70e3      	ANDI R30,LOW(0x3)
-000052 bbe4      	OUT  0x14,R30
+000051 b3e4      	IN   R30,0x14
+000052 70e3      	ANDI R30,LOW(0x3)
+000053 bbe4      	OUT  0x14,R30
                  ; 0000 008F DIDR0|=0x00;
-000053 b3e4      	IN   R30,0x14
-000054 bbe4      	OUT  0x14,R30
+000054 b3e4      	IN   R30,0x14
+000055 bbe4      	OUT  0x14,R30
                  ; 0000 0090 ADMUX=ADC_VREF_TYPE & 0xff;
-000055 e0e0      	LDI  R30,LOW(0)
-000056 b9e7      	OUT  0x7,R30
+000056 e4e0      	LDI  R30,LOW(64)
+000057 b9e7      	OUT  0x7,R30
                  ; 0000 0091 ADCSRA=0x83;
-000057 e8e3      	LDI  R30,LOW(131)
-000058 b9e6      	OUT  0x6,R30
+000058 e8e3      	LDI  R30,LOW(131)
+000059 b9e6      	OUT  0x6,R30
                  ; 0000 0092 
                  ; 0000 0093 
                  ; 0000 0094 while (1)
@@ -1273,36 +1274,36 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 0095       {
                  ; 0000 0096 
                  ; 0000 0097            if (read_adc(motor)<read_adc(reguljator) )
-000059 d01f      	RCALL SUBOPT_0x0
-00005a 93ff      	PUSH R31
-00005b 93ef      	PUSH R30
-00005c d01f      	RCALL SUBOPT_0x1
-00005d 91af      	POP  R26
-00005e 91bf      	POP  R27
-00005f 17ae      	CP   R26,R30
-000060 07bf      	CPC  R27,R31
-000061 f408      	BRSH _0x1B
+00005a d01f      	RCALL SUBOPT_0x0
+00005b 93ff      	PUSH R31
+00005c 93ef      	PUSH R30
+00005d d01f      	RCALL SUBOPT_0x1
+00005e 91af      	POP  R26
+00005f 91bf      	POP  R27
+000060 17ae      	CP   R26,R30
+000061 07bf      	CPC  R27,R31
+000062 f408      	BRSH _0x1B
                  ; 0000 0098                 {
                  ; 0000 0099                     GoUp();
-000062 dfbf      	RCALL _GoUp
+000063 dfbe      	RCALL _GoUp
                  ; 0000 009A 
                  ; 0000 009B                 }
                  ; 0000 009C 
                  ; 0000 009D 
                  ; 0000 009E               if (read_adc(motor)>read_adc(reguljator) )
                  _0x1B:
-000063 d015      	RCALL SUBOPT_0x0
-000064 93ff      	PUSH R31
-000065 93ef      	PUSH R30
-000066 d015      	RCALL SUBOPT_0x1
-000067 91af      	POP  R26
-000068 91bf      	POP  R27
-000069 17ea      	CP   R30,R26
-00006a 07fb      	CPC  R31,R27
-00006b f408      	BRSH _0x1C
+000064 d015      	RCALL SUBOPT_0x0
+000065 93ff      	PUSH R31
+000066 93ef      	PUSH R30
+000067 d015      	RCALL SUBOPT_0x1
+000068 91af      	POP  R26
+000069 91bf      	POP  R27
+00006a 17ea      	CP   R30,R26
+00006b 07fb      	CPC  R31,R27
+00006c f408      	BRSH _0x1C
                  ; 0000 009F                 {
                  ; 0000 00A0                     GoDown();
-00006c dfb8      	RCALL _GoDown
+00006d dfb7      	RCALL _GoDown
                  ; 0000 00A1 
                  ; 0000 00A2                 }
                  ; 0000 00A3 
@@ -1310,41 +1311,41 @@ AVRASM ver. 2.1.30  C:\users\m153\—т≥льниц€\Servo_zaslonka\List\servo.asm Tue Oc
                  ; 0000 00A5 
                  ; 0000 00A6               if (read_adc(motor)==read_adc(reguljator) )
                  _0x1C:
-00006d d00b      	RCALL SUBOPT_0x0
-00006e 93ff      	PUSH R31
-00006f 93ef      	PUSH R30
-000070 d00b      	RCALL SUBOPT_0x1
-000071 91af      	POP  R26
-000072 91bf      	POP  R27
-000073 17ea      	CP   R30,R26
-000074 07fb      	CPC  R31,R27
-000075 f409      	BRNE _0x1D
+00006e d00b      	RCALL SUBOPT_0x0
+00006f 93ff      	PUSH R31
+000070 93ef      	PUSH R30
+000071 d00b      	RCALL SUBOPT_0x1
+000072 91af      	POP  R26
+000073 91bf      	POP  R27
+000074 17ea      	CP   R30,R26
+000075 07fb      	CPC  R31,R27
+000076 f409      	BRNE _0x1D
                  ; 0000 00A7                 {
                  ; 0000 00A8                      Stop();
-000076 dfb2      	RCALL _Stop
+000077 dfb1      	RCALL _Stop
                  ; 0000 00A9 
                  ; 0000 00AA                 }
                  ; 0000 00AB 
                  ; 0000 00AC 
                  ; 0000 00AD       }
                  _0x1D:
-000077 cfe1      	RJMP _0x18
+000078 cfe1      	RJMP _0x18
                  ; 0000 00AE }
                  _0x1E:
-000078 cfff      	RJMP _0x1E
+000079 cfff      	RJMP _0x1E
                  
                  	.CSEG
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:2 WORDS
                  SUBOPT_0x0:
-000079 e0e2      	LDI  R30,LOW(2)
-00007a 93ea      	ST   -Y,R30
-00007b cfb1      	RJMP _read_adc
+00007a e0e2      	LDI  R30,LOW(2)
+00007b 93ea      	ST   -Y,R30
+00007c cfb0      	RJMP _read_adc
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:2 WORDS
                  SUBOPT_0x1:
-00007c e0e3      	LDI  R30,LOW(3)
-00007d 93ea      	ST   -Y,R30
-00007e cfae      	RJMP _read_adc
+00007d e0e3      	LDI  R30,LOW(3)
+00007e 93ea      	ST   -Y,R30
+00007f cfad      	RJMP _read_adc
                  
                  
                  	.CSEG
@@ -1370,7 +1371,7 @@ ATtiny13 register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
 r16:   0 r17:   0 r18:   0 r19:   0 r20:   0 r21:   0 r22:   0 r23:   0 
-r24:   6 r25:   0 r26:  11 r27:   6 r28:   2 r29:   0 r30:  52 r31:   9 
+r24:   6 r25:   0 r26:  11 r27:   6 r28:   2 r29:   0 r30:  53 r31:   9 
 x  :   2 y  :   3 z  :   0 
 Registers used: 8 out of 35 (22.9%)
 
@@ -1387,7 +1388,7 @@ cpc   :   3 cpi   :   0 cpse  :   0 dec   :   3 des   :   0 eor   :   0
 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 in    :   5 
 inc   :   0 ld    :   1 ldd   :   0 ldi   :  19 lds   :   0 lpm   :   0 
 lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 
-mulsu :   0 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  26 
+mulsu :   0 neg   :   0 nop   :   0 or    :   0 ori   :   1 out   :  26 
 pop   :   6 push  :   6 rcall :   9 ret   :   3 reti  :   0 rjmp  :  17 
 rol   :   0 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   5 sbic  :   0 
 sbis  :   1 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 
@@ -1395,12 +1396,12 @@ seh   :   0 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0
 sev   :   0 sez   :   0 sleep :   0 spm   :   0 st    :   4 std   :   0 
 sts   :   0 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
 
-Instructions used: 23 out of 114 (20.2%)
+Instructions used: 24 out of 114 (21.1%)
 
 ATtiny13 memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000fe    254      0    254    1024  24.8%
+[.cseg] 0x000000 0x000100    256      0    256    1024  25.0%
 [.dseg] 0x000060 0x000070      0      0      0     159   0.0%
 [.eseg] 0x000000 0x000000      0      0      0      64   0.0%
 
