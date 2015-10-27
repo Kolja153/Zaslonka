@@ -8,8 +8,8 @@ http://www.hpinfotech.com
 Project : 
 Version : 
 Date    : 27.10.2015
-Author  : Freeware, for evaluation and non-commercial use only
-Company : 
+Author  : Mykola Fedan
+Company :  kolja153.com
 Comments: 
 
 
